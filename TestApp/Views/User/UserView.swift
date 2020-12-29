@@ -10,11 +10,11 @@ import SwiftUI
 import Firebase
 
 struct UserView: View {
-    
+
     @State var presentLogin = false
-    
+
     var body: some View {
-        
+
         VStack {
             Button("Logout") {
                 try! Auth.auth().signOut()
@@ -30,7 +30,7 @@ struct UserView: View {
                 if Auth.auth().currentUser == nil {
                     self.presentLogin = true
                 }
-                
+
             }
         }
 

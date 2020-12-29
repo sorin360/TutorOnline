@@ -12,9 +12,9 @@ import Firebase
 struct RootView: View {
 
     @State var presentLogin = false
-    
+
     var body: some View {
-        
+
         TabView {
             HomeView().tabItem {
                 Image(systemName: "house")
@@ -28,21 +28,17 @@ struct RootView: View {
                 Image(systemName: "person")
                 Text("Home")
             }
-            
+
         }.onAppear {
             if Auth.auth().currentUser == nil {
                 self.presentLogin = true
             }
-            
+
         }.sheet(isPresented: $presentLogin) {
             AuthView(presentLogin: self.$presentLogin)
         }
     }
 }
-
-
-
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

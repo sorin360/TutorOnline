@@ -9,18 +9,18 @@
 import SwiftUI
 
 struct UsersListView: View {
-    
+
     @ObservedObject var usersList = UsersList()
-    
+
     var body: some View {
         NavigationView {
-            List(usersList.users, id: \.self){ user in
+            List(usersList.users, id: \.self) { user in
                 NavigationLink(destination: MessagesView(messages: Messages(userId: user))) {
                     Text(user)
                 }
-                
+
             }.navigationBarTitle(Text("Users"))
         }
-        
+
     }
 }

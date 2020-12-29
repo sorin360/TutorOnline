@@ -10,11 +10,11 @@ import SwiftUI
 import Firebase
 
 struct AuthView: View {
-    
+
     @Binding var presentLogin: Bool
-    
+
     @State private var option = 0
-    
+
     var body: some View {
         Form {
             Section {
@@ -24,42 +24,42 @@ struct AuthView: View {
                 }.pickerStyle(SegmentedPickerStyle())
             }
             option == 0 ? AnyView(LoginView(presentLogin: $presentLogin)) :  AnyView(RegistrationView())
-            
+
         }
     }
 }
 struct LoginView: View {
-    
+
     @Binding var presentLogin: Bool
-    
+
     @State var name = ""
     @State var email = ""
     @State var password = ""
-    
+
     var body: some View {
         Group {
             TextField("Email", text: $email)
             TextField("Password", text: $password)
             Button("Login") {
-                Auth.auth().signIn(withEmail: self.email, password: self.password) { authResult, error in
+                Auth.auth().signIn(withEmail: self.email, password: self.password) { _, error in
                     guard error == nil else {
                         print("Create user error: \(error!)")
                         return
                     }
                     self.presentLogin = false
                 }
-                
+
             }
         }
     }
 }
 
 struct RegistrationView: View {
-    
+
     @State var name = ""
     @State var email = ""
     @State var password = ""
-    
+
     var body: some View {
         VStack {
             TextField("Name", text: $name)
@@ -75,8 +75,8 @@ struct RegistrationView: View {
                         .firestore()
                         .collection("users")
                         .document(authResult?.user.uid ?? "")
-                        .setData(["name":self.name, "email":self.email, "password":self.password])
-                    
+                        .setData(["name": self.name, "email": self.email, "password": self.password])
+
 //                    let ref = Database.database().reference()
 //                    ref.child("users")
 //                        .child(authResult?.user.uid ?? "")
@@ -87,7 +87,7 @@ struct RegistrationView: View {
 //                        }
 //                    }
                 }
-                
+
             }
         }
     }

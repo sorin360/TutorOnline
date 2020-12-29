@@ -10,9 +10,9 @@ import SwiftUI
 import Firebase
 
 struct ChatsView: View {
-    
+
     @ObservedObject var chats = Chats()
-    
+
     var body: some View {
         NavigationView {
             Form {
@@ -21,27 +21,27 @@ struct ChatsView: View {
                 }.navigationBarTitle(Text("Chats"))
             }
         }
-        
+
     }
 }
 
 struct ChatView: View {
-    
+
     @ObservedObject var chat: Chat
-    
+
     var body: some View {
-        
+
         Text(chat.fromID)
-        
+
     }
 }
 
 class Chats: ObservableObject {
-    
+
     @Published var chatsList: [Chat] = []
-    
+
     init() {
-        
+
 //        Firestore.firestore()
 //        .collection("chat")
 //            .document(Auth.auth().currentUser?.uid ?? "nil")
@@ -76,10 +76,9 @@ class Chats: ObservableObject {
 //                        self.chatsList += [chat]
 //                }
 //        }
-        
+
     }
 }
-
 
 //class Chats: ObservableObject {
 //
@@ -102,13 +101,13 @@ class Chats: ObservableObject {
 //}
 
 class Chat: ObservableObject {
-    
+
     var fromID: String
-    
+
     init(fromID: String) {
         self.fromID = fromID
     }
-    
+
     init(dictionary: NSDictionary) {
         self.fromID = dictionary["fromID"] as! String
     }

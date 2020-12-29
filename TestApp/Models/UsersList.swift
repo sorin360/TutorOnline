@@ -11,11 +11,11 @@ import Firebase
 import UIKit
 
 class UsersList: ObservableObject {
-    
+
     @Published var users: [String] = []
-    
+
     init() {
-        
+
         Firestore
             .firestore()
             .collection("users")
@@ -33,18 +33,18 @@ class UsersList: ObservableObject {
         //                    .map { $0?["name"] as? String ?? ""}
         //                    .forEach { self.users += [$0] }
         //        }
-        
+
     }
 }
 
 class PostsList: ObservableObject {
-    
+
     @Published var posts: [Post] = []
-    
+
     @Published var present = false
-    
+
     init() {
-        
+
         Firestore
             .firestore()
             .collection("posts")
@@ -54,15 +54,15 @@ class PostsList: ObservableObject {
                         let post = Post(dictionary: queryDocumentSnapshot.data())
                         Storage.storage()
                             .reference(forURL: post.imageURL)
-                            .getData(maxSize: 10 * 1024 * 1024) { (data, error) in
+                            .getData(maxSize: 10 * 1024 * 1024) { (data, _) in
                             if let data = data {
                                 post.image = UIImage(data: data)
                             }
                         }
                         return post
                 }
-                
+
         }
-        
+
     }
 }
