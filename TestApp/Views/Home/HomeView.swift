@@ -93,10 +93,6 @@ struct NewPostView: View {
     }
 }
 
-class User: ObservableObject {
-
-}
-
 class Post: ObservableObject {
     var id: String
     var user: String
@@ -168,4 +164,35 @@ struct UICustomImagePicker: UIViewControllerRepresentable {
         }
     }
 
+}
+
+
+class PostsList: ObservableObject {
+
+    @Published var posts: [Post] = []
+
+    @Published var present = false
+
+    init() {
+
+        Firestore
+            .firestore()
+            .collection("posts")
+            .addSnapshotListener { (querySnapshot, _) in
+                self.posts = querySnapshot!.documents
+                    .compactMap { (queryDocumentSnapshot) -> Post in
+                        let post = Post(dictionary: queryDocumentSnapshot.data())
+                        Storage.storage()
+                            .reference(forURL: post.imageURL)
+                            .getData(maxSize: 10 * 1024 * 1024) { (data, _) in
+                            if let data = data {
+                                post.image = UIImage(data: data)
+                            }
+                        }
+                        return post
+                }
+
+        }
+
+    }
 }

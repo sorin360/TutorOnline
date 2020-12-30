@@ -10,32 +10,40 @@ import SwiftUI
 import Firebase
 
 struct RootView: View {
-
+    
     @State var presentLogin = false
-
+    
+    @State var selectedTab: String = "Users"
+    
     var body: some View {
-
-        TabView {
-            HomeView().tabItem {
-                Image(systemName: "house")
-                Text("Home")
+        NavigationView {
+            TabView(selection: $selectedTab) {
+                UsersView()
+                    .tabItem {
+                        Image(systemName: "house")
+                        Text("Home")
+                    }
+                    .tag("Users")
+                ChatsView()
+                    .tabItem {
+                        Image(systemName: "message")
+                        Text("Home")
+                    }
+                    .tag("Chats")
+                ProfileView(presentLogin: $presentLogin)
+                    .tabItem {
+                        Image(systemName: "person")
+                        Text("Home")
+                    }
+                    .tag("Profile")
+            }.onAppear {
+                if Auth.auth().currentUser == nil {
+                    self.presentLogin = true
+                }
+            }.sheet(isPresented: $presentLogin) {
+                AuthView(presentLogin: self.$presentLogin)
             }
-            ChatsView().tabItem {
-                Image(systemName: "message")
-                Text("Home")
-            }
-            UsersListView().tabItem {
-                Image(systemName: "person")
-                Text("Home")
-            }
-
-        }.onAppear {
-            if Auth.auth().currentUser == nil {
-                self.presentLogin = true
-            }
-
-        }.sheet(isPresented: $presentLogin) {
-            AuthView(presentLogin: self.$presentLogin)
+            .navigationBarTitle(selectedTab)
         }
     }
 }

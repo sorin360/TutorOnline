@@ -38,6 +38,7 @@ struct LoginView: View {
 
     var body: some View {
         Group {
+            TextField("Name", text: $name)
             TextField("Email", text: $email)
             TextField("Password", text: $password)
             Button("Login") {
